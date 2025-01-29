@@ -14,9 +14,9 @@
 ## Tech Stack
 
 ### Frontend
-- **React.js**: For building a dynamic and responsive user interface.
+- **Next.js**: For building a dynamic and SEO-friendly user interface.
 - **Axios**: For API communication between frontend and backend.
-- **React Router**: For seamless navigation between pages.
+- **NextAuth.js**: For seamless authentication.
 
 ### Backend
 - **Node.js**: Runtime environment for server-side execution.
@@ -64,11 +64,33 @@
 3. **Frontend Setup**:
    ```bash
    cd ../frontend
+   npx create-next-app@latest .
    npm install
    ```
+   - Install necessary dependencies:
+     ```bash
+     npm install axios tailwindcss @tailwindcss/forms chart.js react-chartjs-2 next-auth
+     ```
+   - Initialize TailwindCSS:
+     ```bash
+     npx tailwindcss init
+     ```
+   - Configure `tailwind.config.js` to include the required paths:
+     ```js
+     module.exports = {
+       content: [
+         "./pages/**/*.{js,ts,jsx,tsx}",
+         "./components/**/*.{js,ts,jsx,tsx}"
+       ],
+       theme: {
+         extend: {},
+       },
+       plugins: [require('@tailwindcss/forms')],
+     };
+     ```
    - Start the development server:
      ```bash
-     npm start
+     npm run dev
      ```
 
 4. **Access the Application**:
@@ -122,4 +144,3 @@ For queries or feedback, contact:
 - **Name**: Shubham
 - **Portfolio**: [www.shubhamprakash26.netlify.com](http://www.shubhamprakash26.netlify.com)
 - **Email**: your-email@example.com
-
