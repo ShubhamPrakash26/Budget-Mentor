@@ -1,6 +1,9 @@
 const Budget = require("../models/budgetModel");
 
-exports.createBudget = async (req, res) => {
+// @desc    Add new budget
+// @route   POST /api/budget
+// @access  Private
+const addBudget = async (req, res) => {
   try {
     const { title, totalBudget, startDate, endDate } = req.body;
 
@@ -8,16 +11,27 @@ exports.createBudget = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const newBudget = new Budget({
+    const newBudget = await Budget.create({
       title,
       totalBudget,
       startDate,
-      endDate
+      endDate,
+      user: req.user.id  // Add the user ID from the authenticated request
     });
 
-    await newBudget.save();
     res.status(201).json(newBudget);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getBudgets = async (req, res) => {
+  try {
+    const budgets = await Budget.find({ user: req.user.id });
+    res.status(200).json(budgets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { addBudget, getBudgets };
