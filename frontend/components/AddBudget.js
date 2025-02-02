@@ -8,8 +8,17 @@ const AddBudget = ({ onBudgetAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addBudget(budgetData, session.accessToken);
-    onBudgetAdded();
+    if (new Date(budgetData.endDate) <= new Date(budgetData.startDate)) {
+      alert("End date must be after the start date.");
+      return;
+    }
+    try {
+      await addBudget(budgetData, session.accessToken);
+      setBudgetData({ title: "", totalBudget: "", startDate: "", endDate: "" }); // Clear form
+      onBudgetAdded();
+    } catch (err) {
+      alert("Failed to add budget: " + err.message);
+    }
   };
 
   return (
