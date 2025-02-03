@@ -1,49 +1,45 @@
-const Expense = require('../models/Expense');
+const Expense = require("../models/expenseModel");
 
-
-const addExpense = async (req, res) => {
+// Get expenses for the logged-in user
+exports.getExpenses = async (req, res) => {
   try {
-    const { description, amount, date, category, budget } = req.body;
+    const expenses = await Expense.find({ user: req.user.id }).sort({ date: -1 });
+    res.json(expenses);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
-    if (!description || !amount || !category || !budget) {
-      return res.status(400).json({ message: 'Please fill all required fields' });
-    }
+// Add a new expense
+exports.addExpense = async (req, res) => {
+  const { category, amount, description } = req.body;
 
-    // Create expense
-    const expense = await Expense.create({
-      user: req.user.id, // From auth middleware
-      budget,
-      description,
-      amount,
-      date: date || Date.now(),
-      category
-    });
+  if (!category || !amount) {
+    return res.status(400).json({ message: "Category and amount are required" });
+  }
 
+  try {
+    const expense = new Expense({ user: req.user.id, category, amount, description });
+    await expense.save();
     res.status(201).json(expense);
   } catch (error) {
-    console.error('Error in addExpense:', error);
-    res.status(500).json({ message: 'Error adding expense', error: error.message });
+    res.status(500).json({ message: "Failed to add expense" });
   }
 };
 
-const getExpenses = async (req, res) => {
+// Delete an expense
+exports.deleteExpense = async (req, res) => {
   try {
-    const { budgetId } = req.params;
-    
-    if (!budgetId) {
-      return res.status(400).json({ message: 'Budget ID is required' });
+    const expense = await Expense.findById(req.params.id);
+    if (!expense) return res.status(404).json({ message: "Expense not found" });
+
+    if (expense.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
-    const expenses = await Expense.find({ 
-      user: req.user.id, 
-      budget: budgetId 
-    });
-
-    res.status(200).json(expenses);
+    await expense.remove();
+    res.json({ message: "Expense removed" });
   } catch (error) {
-    console.error('Error in getExpenses:', error);
-    res.status(500).json({ message: 'Error fetching expenses', error: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
-module.exports = { addExpense, getExpenses };

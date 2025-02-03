@@ -1,37 +1,45 @@
 const Budget = require("../models/budgetModel");
 
-// @desc    Add new budget
-// @route   POST /api/budget
-// @access  Private
-const addBudget = async (req, res) => {
-  try {
-    const { title, totalBudget, startDate, endDate } = req.body;
-
-    if (!title || !totalBudget || !startDate || !endDate) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    const newBudget = await Budget.create({
-      title,
-      totalBudget,
-      startDate,
-      endDate,
-      user: req.user.id  // Add the user ID from the authenticated request
-    });
-
-    res.status(201).json(newBudget);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const getBudgets = async (req, res) => {
+// Get budgets for the logged-in user
+exports.getBudgets = async (req, res) => {
   try {
     const budgets = await Budget.find({ user: req.user.id });
-    res.status(200).json(budgets);
+    res.json(budgets);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { addBudget, getBudgets };
+// Add a new budget
+exports.addBudget = async (req, res) => {
+  const { category, amount, month, year } = req.body;
+
+  if (!category || !amount || !month || !year) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const budget = new Budget({ user: req.user.id, category, amount, month, year });
+    await budget.save();
+    res.status(201).json(budget);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to add budget" });
+  }
+};
+
+// Delete a budget
+exports.deleteBudget = async (req, res) => {
+  try {
+    const budget = await Budget.findById(req.params.id);
+    if (!budget) return res.status(404).json({ message: "Budget not found" });
+
+    if (budget.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await budget.remove();
+    res.json({ message: "Budget removed" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
