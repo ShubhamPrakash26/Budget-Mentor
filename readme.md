@@ -143,4 +143,4 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 For queries or feedback, contact:
 - **Name**: Shubham
 - **Portfolio**: [www.shubhamprakash26.netlify.com](http://www.shubhamprakash26.netlify.com)
-- **Email**: your-email@example.com
+- **Email**: user@example.com
