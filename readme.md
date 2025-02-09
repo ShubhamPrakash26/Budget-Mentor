@@ -96,19 +96,48 @@
 4. **Access the Application**:
    Open your browser and navigate to `http://localhost:3000`.
 
-## API Endpoints
+Here’s the updated **API Endpoints** section for your **README.md** file in markdown format:  
 
-### User Authentication
-- **POST /api/users/register**: Register a new user.
-- **POST /api/users/login**: Login and retrieve a JWT token.
+---
 
-### Budget and Expenses
-- **GET /api/budget**: Retrieve user budget and expenses.
-- **POST /api/budget**: Add or update budget information.
-- **POST /api/expenses**: Add a new expense.
+## **API Endpoints**  
 
-### Financial Advice
-- **POST /api/advice**: Get financial advice based on a user’s query.
+### **Authentication**  
+- `POST /api/users/register` - Register a new user  
+- `POST /api/users/login` - Login and retrieve a JWT token  
+- `GET /api/users/profile` - Get logged-in user profile (protected)  
+
+### **Budget Management**  
+- `GET /api/budget` - Retrieve user’s budget details  
+- `POST /api/budget` - Create or update budget  
+
+### **Expense Management**  
+- `GET /api/expenses` - Retrieve all expenses  
+- `POST /api/expenses` - Add a new expense  
+- `PUT /api/expenses/:id` - Update an expense  
+- `DELETE /api/expenses/:id` - Delete an expense  
+
+### **Financial Goals**  
+- `GET /api/goals` - Retrieve all financial goals  
+- `POST /api/goals` - Add a new goal  
+- `PUT /api/goals/:id` - Update a goal  
+- `DELETE /api/goals/:id` - Delete a goal  
+
+### **AI-Powered Financial Insights**  
+- `POST /api/ai/response` - Get AI-generated financial advice  
+- `POST /api/ai/optimize` - Get AI-powered budget optimization suggestions  
+
+### **Spending Trends & Analytics**  
+- `GET /api/trends` - Retrieve spending trends based on category & month  
+
+### **Summary & Reports**  
+- `GET /api/summary/monthly` - Retrieve monthly budget summary  
+
+### **Notifications & Reminders** (Future)  
+- `GET /api/notifications` - Get user notifications  
+- `POST /api/notifications` - Create a new notification  
+
+---
 
 ## Usage
 
