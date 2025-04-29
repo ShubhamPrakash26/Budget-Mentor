@@ -44,9 +44,3 @@ Here are some **additional features** that will make BudgetMentor even better:
 - Auto-categorize transactions  
 
 ---
-
-### **🔍 Next Steps**
-1. **Do you want to add any of these features?**  
-   - If yes, which ones should we implement first?  
-2. **Should we start frontend development now?**  
-   - The backend is complete, so we can move to the Next.js UI. 🚀
